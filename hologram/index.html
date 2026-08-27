@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>I.G.R.I.S.</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="hologram">
+
+    <!-- ================================================ -->
+    <!-- HOLOGRAM CANVAS -->
+    <!-- ================================================ -->
+
+    <canvas id="canvas"></canvas>
+
+
+    <!-- ================================================ -->
+    <!-- HUD -->
+    <!-- ================================================ -->
+
+    <div class="hud">
+
+
+        <!-- TOP LEFT -->
+
+        <div class="hud-corner top-left">
+            IGRIS OS V1.0.0
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="hud-title">
+            I.G.R.I.S.
+        </div>
+
+
+        <!-- TOP RIGHT -->
+
+        <div class="hud-corner top-right">
+            GUARDIAN MODE
+        </div>
+    
+        <!-- ============================= -->
+<!-- I.G.R.I.S. CONVERSATION PANEL -->
+<!-- ============================= -->
+<div class="panel conversation-panel">
+
+    <div class="conversation-header">
+        <span>I.G.R.I.S. // CONVERSATION</span>
+    </div>
+
+    <div class="conversation-status" id="conversationStatus">
+    <span class="status-dot"></span>
+    <span id="conversationStatusText">STANDBY</span>
+</div>
+
+    <div class="conversation-messages" id="conversationMessages">
+        <div class="message igris-message">
+            <span class="message-label">I.G.R.I.S.</span>
+            <p>Systems online. How may I assist you?</p>
+        </div>
+    </div>
+
+    <div class="conversation-input-area">
+
+        <input
+            type="text"
+            id="conversationInput"
+            placeholder="Type a message..."
+            autocomplete="off"
+        />
+
+        <button id="conversationSend">
+            ➤
+        </button>
+
+    </div>
+
+</div>
+
+
+
+        <!-- ============================================ -->
+        <!-- RIGHT CONNECTION FEED -->
+        <!-- ============================================ -->
+
+        <div class="panel right-panel connection-panel">
+
+            <div class="panel-title">
+                CONNECTION FEED
+            </div>
+
+            <div class="divider"></div>
+
+            <canvas id="connectionGraph"></canvas>
+
+        </div>
+
+
+        <!-- ============================================ -->
+        <!-- RIGHT DATA STREAM -->
+        <!-- ============================================ -->
+
+        <div class="panel right-panel data-panel">
+
+            <div class="panel-title">
+                DATA STREAM
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="data-lines">
+                <span>001</span>
+                <span>010</span>
+                <span>110</span>
+                <span>101</span>
+            </div>
+
+            <div class="data-bars">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+
+        </div>
+
+
+        <!-- ============================================ -->
+        <!-- BOTTOM STATUS -->
+        <!-- ============================================ -->
+
+        <div class="bottom-status">
+
+            <div class="status-line"></div>
+
+            <div class="status-text">
+                SYSTEM INITIALIZING
+            </div>
+
+            <div class="status-subtext">
+                CORE ONLINE • WAITING FOR I.G.R.I.S.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="hologram.js"></script>
+<script src="../conversation.js"></script>
+<script>
+const connectionGraph =
+    document.getElementById("connectionGraph");
+
+const connectionCtx =
+    connectionGraph.getContext("2d");
+
+let connectionState = "STANDBY";
+let connectionOffset = 0;
+
+function drawConnectionFeed() {
+
+    const dpr = window.devicePixelRatio || 1;
+
+    const width =
+        connectionGraph.clientWidth * dpr;
+
+    const height =
+        connectionGraph.clientHeight * dpr;
+
+    connectionGraph.width = width;
+    connectionGraph.height = height;
+
+    connectionCtx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    connectionCtx.beginPath();
+
+    const centerY = height * 0.58;
+
+    const points = 120;
+
+    for (let i = 0; i <= points; i++) {
+
+        const x =
+            (i / points) * width;
+
+        let y = centerY;
+
+        let speed = 0.018;
+        let intensity = 1;
+
+        if (connectionState === "SPEAKING") {
+            speed = 0.045;
+            intensity = 1.5;
+        }
+
+        if (connectionState === "READY") {
+            speed = 0.018;
+            intensity = 0.75;
+        }
+
+        if (connectionState === "STANDBY") {
+            speed = 0.010;
+            intensity = 0.45;
+        }
+
+        const cycleLength =
+            connectionState === "SPEAKING"
+                ? 24
+                : 42;
+
+        const phase =
+            (i + connectionOffset) % cycleLength;
+
+        // Normal heartbeat line
+        if (connectionState === "SPEAKING") {
+
+            // Large continuous heartbeat
+            if (phase < 4) {
+
+                y = centerY;
+
+            } else if (phase < 8) {
+
+                const p = (phase - 4) / 4;
+
+                y =
+                    centerY -
+                    height * 0.18 * intensity * p;
+
+            } else if (phase < 12) {
+
+                const p = (phase - 8) / 4;
+
+                 y =
+                    centerY -
+                    height * 0.18 * intensity +
+                    height * 0.42 * intensity * p;
+
+            } else if (phase < 16) {
+
+                const p = (phase - 12) / 4;
+
+                y =
+                    centerY +
+                    height * 0.24 * intensity -
+                    height * 0.48 * intensity * p;
+
+            } else if (phase < 20) {
+
+                const p = (phase - 16) / 4;
+
+                y =
+                    centerY -
+                    height * 0.24 * intensity +
+                    height * 0.24 * intensity * p;
+
+            } else {
+
+                y = centerY;
+            }
+
+            } else {
+
+                // Small heartbeat with a little spacing
+            if (phase < 18) {
+
+                const p = phase;
+
+            if (p < 4) {
+                y = centerY;
+            }
+            else if (p < 7) {
+                y =
+                    centerY -
+                    height * 0.08 * intensity;
+            }
+            else if (p < 9) {
+                y =
+                    centerY +
+                    height * 0.15 * intensity;
+            }
+            else if (p < 12) {
+                y =
+                    centerY -
+                    height * 0.24 * intensity;
+            }
+            else if (p < 15) {
+                y =
+                    centerY +
+                    height * 0.09 * intensity;
+            }
+            else {
+                y = centerY;
+            }
+
+        } else {
+
+            y = centerY;
+        }
+    }
+            
+
+        if (i === 0) {
+            connectionCtx.moveTo(x, y);
+        } else {
+            connectionCtx.lineTo(x, y);
+        }
+    }
+
+    connectionCtx.strokeStyle =
+        "rgba(70, 210, 255, 0.9)";
+
+    connectionCtx.lineWidth =
+        2 * dpr;
+
+    connectionCtx.shadowBlur =
+        10 * dpr;
+
+    connectionCtx.shadowColor =
+        "rgba(70, 210, 255, 0.8)";
+
+    connectionCtx.stroke();
+
+    connectionCtx.shadowBlur = 0;
+}
+
+function animateConnectionFeed() {
+    connectionOffset += 0.35;
+
+    drawConnectionFeed();
+
+    requestAnimationFrame(
+        animateConnectionFeed
+    );
+}
+
+animateConnectionFeed();
+</script>
+
+</script>
+// ================================
+// DATA STREAM
+// ================================
+
+const dataBars = document.querySelectorAll(".data-bars i");
+const dataBits = document.querySelectorAll(".data-lines span");
+
+function updateDataStream() {
+
+    dataBars.forEach((bar) => {
+
+        const scale =
+            0.3 + Math.random() * 2.7;
+
+        bar.style.transform =
+            `scaleY(${scale})`;
+    });
+
+    dataBits.forEach((bit) => {
+
+        let value = "";
+
+        for (let i = 0; i < 3; i++) {
+            value += Math.random() > 0.5 ? "1" : "0";
+        }
+
+        bit.textContent = value;
+    });
+}
+
+setInterval(
+    updateDataStream,
+    180
+);
+
+updateDataStream();
+
+</script>
+
+</body>
+</html>
