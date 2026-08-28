@@ -12,13 +12,15 @@ I.G.R.I.S. can now distinguish between the project owner and another speaker usi
 
 ## 🚀 Features
 
+## 🚀 Features
+
 - 🎙️ Wake-word activation
 - 🧠 Speaker recognition
 - 👤 Boss / other-speaker detection
 - 💬 Voice command processing
 - 🤖 Command handling and response system
-- 🌌 Futuristic hologram-style interface
-- 🖥️ Desktop-based assistant experience
+- 🖥️ Futuristic hologram-style interface
+- 💻 Desktop-based assistant experience
 - 🕐 Time-based personalized greetings
 - ▶️ Windows batch-file launcher
 
