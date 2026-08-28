@@ -4,6 +4,10 @@
 
 I.G.R.I.S. is a personal AI desktop assistant project designed to provide a voice-controlled interface with a futuristic HUD-style visual experience.
 
+### Latest Update
+
+I.G.R.I.S. can now distinguish between the project owner and another speaker using speaker verification after a wake phrase. It provides a personalized greeting based on the detected speaker and time of day.
+
 ## 🚀 Features
 
 * 🎙️ Voice-based interaction
@@ -12,6 +16,14 @@ I.G.R.I.S. is a personal AI desktop assistant project designed to provide a voic
 * 🌌 Futuristic hologram-style interface
 * 🖥️ Desktop-based assistant experience
 * ▶️ Windows batch-file launcher
+* ## Current Features
+- Wake-word activation
+- Holographic HUD interface
+- Time-based greetings
+- Voice command processing
+- Speaker recognition
+- Boss / other-speaker detection
+- Personalized voice interaction
 
 ## 🛠️ Technologies Used
 
