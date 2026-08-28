@@ -68,6 +68,23 @@ def listen_for_wake_phrase():
 
                 print("I.G.R.I.S. ACTIVATED!")
 
+                VOICE_PYTHON = PROJECT_DIR / "voice_env312" / "Scripts" / "python.exe"
+                VOICE_CHECKER = PROJECT_DIR / "voice_checker.py"
+
+                voice_result = subprocess.run(
+                    [
+                        str(VOICE_PYTHON),
+                        str(VOICE_CHECKER),
+                        str(temp_file),
+                    ],
+                    capture_output=True,
+                    text=True,
+                )
+
+                is_boss = voice_result.returncode == 0
+                print("Voice identity:", "BOSS" if is_boss else "OTHER")
+
+                # Open the hologram only after the wake phrase and voice check.
                 HOLOGRAM_FILE = PROJECT_DIR / "hologram" / "index.html"
 
                 EDGE_PATH = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
@@ -82,11 +99,16 @@ def listen_for_wake_phrase():
                 hour = datetime.now().hour
 
                 if 5 <= hour < 12:
-                    greeting = "Good morning, sir. How may I help you?"
+                    time_word = "morning"
                 elif 12 <= hour < 17:
-                    greeting = "Good afternoon, sir. How may I help you?"
+                    time_word = "afternoon"
                 else:
-                    greeting = "Good evening, sir. How may I help you?"
+                    time_word = "evening"
+
+                if is_boss:
+                    greeting = f"Good {time_word}, sir. How may I help you?"
+                else:
+                    greeting = f"Good {time_word}. Where is my boss?"
 
                 speak(greeting)
 

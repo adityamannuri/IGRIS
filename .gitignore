@@ -9,3 +9,6 @@ voice_env/
 voice_env312/
 pretrained_models/
 .vscode/
+boss_wake*.wav
+other_wake*.wav
+wake_calibration.py
