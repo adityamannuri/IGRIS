@@ -3,3 +3,9 @@ __pycache__/
 .env
 venv/
 .venv/
+boss_voice.wav
+test_voice.wav
+voice_env/
+voice_env312/
+pretrained_models/
+.vscode/
