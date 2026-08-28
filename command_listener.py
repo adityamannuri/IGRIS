@@ -96,8 +96,6 @@ def listen_for_command() -> str | None:
         return None
 def run_command_loop():
 
-    speak("I am listening.")
-
     while True:
 
         if SLEEP_FLAG.exists():

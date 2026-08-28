@@ -1,7 +1,7 @@
 import subprocess
 import webbrowser
 from pathlib import Path
-
+from datetime import datetime
 import sounddevice as sd
 import soundfile as sf
 import speech_recognition as sr
@@ -67,20 +67,30 @@ def listen_for_wake_phrase():
             if any(phrase in text for phrase in WAKE_PHRASES):
 
                 print("I.G.R.I.S. ACTIVATED!")
-            from pathlib import Path
 
-            HOLOGRAM_FILE = PROJECT_DIR / "hologram" / "index.html"
-            
-            EDGE_PATH = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+                HOLOGRAM_FILE = PROJECT_DIR / "hologram" / "index.html"
 
-            hologram_process = subprocess.Popen(
-                [
-                    EDGE_PATH,
-                    "--app=" + HOLOGRAM_FILE.resolve().as_uri()
-                ]
-            )
+                EDGE_PATH = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
-            run_command_loop()
+                hologram_process = subprocess.Popen(
+                    [
+                        EDGE_PATH,
+                        "--app=" + HOLOGRAM_FILE.resolve().as_uri()
+                    ]
+                )
+
+                hour = datetime.now().hour
+
+                if 5 <= hour < 12:
+                    greeting = "Good morning, sir. How may I help you?"
+                elif 12 <= hour < 17:
+                    greeting = "Good afternoon, sir. How may I help you?"
+                else:
+                    greeting = "Good evening, sir. How may I help you?"
+
+                speak(greeting)
+
+                run_command_loop()
 
             subprocess.run(
                 [
