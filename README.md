@@ -10,20 +10,17 @@ I.G.R.I.S. can now distinguish between the project owner and another speaker usi
 
 ## 🚀 Features
 
-* 🎙️ Voice-based interaction
-* 🔊 Voice command processing
-* 🧠 Command handling and response system
-* 🌌 Futuristic hologram-style interface
-* 🖥️ Desktop-based assistant experience
-* ▶️ Windows batch-file launcher
-* ## Current Features
-- Wake-word activation
-- Holographic HUD interface
-- Time-based greetings
-- Voice command processing
-- Speaker recognition
-- Boss / other-speaker detection
-- Personalized voice interaction
+## 🚀 Features
+
+- 🎙️ Wake-word activation
+- 🧠 Speaker recognition
+- 👤 Boss / other-speaker detection
+- 💬 Voice command processing
+- 🤖 Command handling and response system
+- 🌌 Futuristic hologram-style interface
+- 🖥️ Desktop-based assistant experience
+- 🕐 Time-based personalized greetings
+- ▶️ Windows batch-file launcher
 
 ## 🛠️ Technologies Used
 
