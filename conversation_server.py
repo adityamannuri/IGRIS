@@ -5,7 +5,7 @@ from pathlib import Path
 import threading
 
 from command_processor import process_command
-from speech_output import speak
+from speech_output import speak, stop_speaking
 
 
 HOST = "127.0.0.1"
@@ -151,6 +151,38 @@ class ConversationHandler(BaseHTTPRequestHandler):
 
         parsed = urlparse(self.path)
 
+        # ---------------------------------
+        # STOP CURRENT SPEECH
+        # ---------------------------------
+        if parsed.path == "/speaker":
+
+            try:
+
+                stop_speaking()
+
+                self.send_json(
+                    200,
+                    {
+                        "ok": True,
+                        "stopped": True
+                    }
+                )
+
+            except Exception as error:
+
+                print(
+                    "Speech stop error:",
+                    error
+                )
+
+                self.send_json(
+                    500,
+                    {
+                        "error": str(error)
+                    }
+                )
+
+            return
 
         # ---------------------------------
         # TYPED CHAT MESSAGE
@@ -170,7 +202,7 @@ class ConversationHandler(BaseHTTPRequestHandler):
                 )
 
                 data = json.loads(
-                    raw_body.decode("utf-8")
+            raw_body.decode("utf-8")
                 )
 
                 command = str(
@@ -198,16 +230,18 @@ class ConversationHandler(BaseHTTPRequestHandler):
                 if response == "__SLEEP__":
 
                     SLEEP_FLAG.write_text(
-                    "sleep",
+                        "sleep",
                     encoding="utf-8"
                     )
 
                     spoken_response = "Going to sleep."
 
                     add_event(
-                    "igris",
-                    spoken_response
+                        "igris",
+                        spoken_response
                     )
+
+                    speak(spoken_response)
 
                     self.send_json(
                         200,
@@ -221,66 +255,32 @@ class ConversationHandler(BaseHTTPRequestHandler):
 
                 spoken_response = response
 
-                add_event(
-                    "status",
-                    "SPEAKING"
-                )
-
+                # Show the answer in the chat immediately.
                 add_event(
                     "igris",
                     spoken_response
                 )
 
+                # Start speech in the background.
+                add_event(
+                    "status",
+                    "SPEAKING"
+                )
+
                 speak(spoken_response)
 
+             # The speech runs independently, so the browser
+                # can still send a STOP request.
                 add_event(
                     "status",
-                    "READY"
+                "READY"
                 )
-
-                add_event(
-                    "status",
-                    "READY"
-                )
-
-                if response != "__SLEEP__":
-                     
-                    follow_up = "What's now sir?"
-
-                    add_event(
-                        "status",
-                        "SPEAKING"
-                    )
-
-                    follow_up = "What's now sir?"
-
-                    add_event(
-                        "status",
-                        "SPEAKING"
-                        )
-
-                    add_event(
-                        "igris",
-                        follow_up
-                    )
-
-                    speak(follow_up)
-
-                    add_event(
-                        "status",
-                        "READY"
-                    )
-
-                    add_event(
-                        "status",
-                        "READY"
-                    )
 
                 self.send_json(
-                    200,
+                200,
                     {
                         "response": spoken_response,
-                        "sleep": response == "__SLEEP__"
+                        "sleep": False
                     }
                 )
 
@@ -288,7 +288,7 @@ class ConversationHandler(BaseHTTPRequestHandler):
 
                 print(
                     "Conversation server error:",
-                    error
+                 error
                 )
 
                 self.send_json(
@@ -299,7 +299,6 @@ class ConversationHandler(BaseHTTPRequestHandler):
                 )
 
             return
-
         # ---------------------------------
         # VOICE EVENT
         # ---------------------------------

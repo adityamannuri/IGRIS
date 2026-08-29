@@ -6,7 +6,7 @@ import sounddevice as sd
 import soundfile as sf
 import speech_recognition as sr
 
-from speech_output import speak
+from speech_output import speak, wait_for_speech
 from command_listener import run_command_loop
 
 WAKE_PHRASES = (
@@ -111,7 +111,7 @@ def listen_for_wake_phrase():
                     greeting = f"Good {time_word}. Where is my boss?"
 
                 speak(greeting)
-
+                wait_for_speech()
                 run_command_loop()
 
             subprocess.run(

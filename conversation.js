@@ -4,6 +4,39 @@ const messages = document.getElementById("conversationMessages");
 const statusText =
     document.getElementById("conversationStatusText");
 
+const speakerToggle =
+    document.getElementById("speakerToggle");
+
+    async function stopIgrisSpeech() {
+
+    try {
+
+        const response = await fetch(
+            `${BRIDGE_URL}/speaker`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Speech stop failed."
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Speech stop error:",
+            error
+        );
+    }
+}
+
 function setConversationStatus(state) {
     statusText.textContent = state;
 }
@@ -188,6 +221,50 @@ async function pollConversation() {
     }
 }
     
+/* STOP CURRENT SPEECH */
+
+async function stopIgrisSpeech() {
+
+    try {
+
+        const response = await fetch(
+            `${BRIDGE_URL}/speaker`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({})
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Speech stop failed."
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Speech stop error:",
+            error
+        );
+
+    }
+}
+speakerToggle.addEventListener(
+    "click",
+    stopIgrisSpeech
+);
+
+
+speakerToggle.addEventListener(
+    "click",
+    stopIgrisSpeech
+);
 
 /* SEND BUTTON */
 

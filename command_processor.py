@@ -1,7 +1,8 @@
 from datetime import datetime
 import subprocess
 import webbrowser
-
+from web_search import search_web
+from ai_brain import ask_brain
 
 def process_command(command: str) -> str:
     """
@@ -70,32 +71,6 @@ def process_command(command: str) -> str:
             shell=False
         )
         return "Opening Visual Studio Code."
-
-    # -----------------------------
-    # WEB SEARCH
-    # -----------------------------
-    if command.startswith("search for "):
-
-        query = command.replace(
-            "search for ",
-            "",
-            1
-        ).strip()
-
-        if query:
-            webbrowser.open(
-                "https://www.google.com/search?q="
-                + query.replace(" ", "+")
-            )
-
-            return f"Searching for {query}."
-
-    # -----------------------------
-    # GREETING
-    # -----------------------------
-    if "hello" in command or "hi igris" in command:
-        return "Hello sir. How May i Help you."
-
     # -----------------------------
     # NAME
     # -----------------------------
@@ -103,8 +78,37 @@ def process_command(command: str) -> str:
         "what is your name" in command
         or "what's your name" in command
         or "who are you" in command
-):
+    ):
         return "My full name is Integrated Guardian Responsive Intelligence System."
+
+    # -----------------------------
+    # WEB SEARCH - IGRIS V1.5
+    # -----------------------------
+    search_triggers = (
+        "search for ",
+        "search ",
+        "look up ",
+        "find information about ",
+        "find info about ",
+        "search the web for ",
+    )
+
+    for trigger in search_triggers:
+
+        if command.startswith(trigger):
+
+            query = command[len(trigger):].strip()
+
+            if query:
+                return search_web(query)
+
+            return "What would you like me to search for sir?"
+
+    # -----------------------------
+    # GREETING
+    # -----------------------------
+    if "hello" in command or "hi igris" in command:
+        return "Hello sir. How May i Help you."
     
     # -----------------------------
     # PLAY MUSIC
@@ -126,21 +130,22 @@ def process_command(command: str) -> str:
 
 
     # -----------------------------
-    # UNKNOWN
+    # AI BRAIN - IGRIS V2
     # -----------------------------
-    return "Sorry Sir, I didn't understand that command."
+    return ask_brain(command)
 
-if __name__ == "__main__":
 
-    while True:
+    if __name__ == "__main__":
 
-        user_command = input("Command: ")
+        while True:
 
-        response = process_command(
-            user_command
-        )
+            user_command = input("Command: ")
 
-        print("I.G.R.I.S.:", response)
+            response = process_command(
+                user_command
+            )
 
-        if response == "__SLEEP__":
-            break
+            print("I.G.R.I.S.:", response)
+
+            if response == "__SLEEP__":
+                break
