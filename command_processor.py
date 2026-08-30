@@ -3,6 +3,7 @@ import subprocess
 import webbrowser
 from web_search import search_web
 from ai_brain import ask_brain
+from creator_profile import CREATOR_PROFILE
 
 def process_command(command: str) -> str:
     """
@@ -72,14 +73,66 @@ def process_command(command: str) -> str:
         )
         return "Opening Visual Studio Code."
     # -----------------------------
-    # NAME
+    # IGRIS / CREATOR IDENTITY
     # -----------------------------
     if (
         "what is your name" in command
         or "what's your name" in command
-        or "who are you" in command
     ):
-        return "My full name is Integrated Guardian Responsive Intelligence System."
+        return (
+            "My full name is Integrated Guardian Responsive Intelligence System."
+        )
+
+    if (
+        "who are you" in command
+    ):
+        return (
+            "I am I.G.R.I.S., your personal AI assistant."
+        )
+
+    if (
+        "who is your creator" in command
+        or "who created you" in command
+        or "who made you" in command
+        or "who is created you" in command
+    ):
+        return (
+            f"My creator is {CREATOR_PROFILE['name']}, "
+            f"the {CREATOR_PROFILE['role']}."
+        )
+
+    if (
+        "what is my name" in command
+    ):
+        return (
+            f"Your name is {CREATOR_PROFILE['name']}."
+        )
+
+    if (
+        "what am i studying" in command
+        or "what do i study" in command
+        or "which course am i studying" in command
+    ):
+        return (
+            f"You are studying {CREATOR_PROFILE['education']}."
+        )
+
+    if (
+        "which year am i in" in command
+        or "what year am i in" in command
+        or "which standard am i in" in command
+    ):
+        return (
+            f"You are in your {CREATOR_PROFILE['year']}."
+        )
+
+    if (
+        "what is my project" in command
+        or "tell me about my project" in command
+    ):
+        return (
+            f"Your project is {CREATOR_PROFILE['project']}."
+        )
 
     # -----------------------------
     # WEB SEARCH - IGRIS V1.5
