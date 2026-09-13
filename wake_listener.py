@@ -65,6 +65,7 @@ def listen_for_wake_phrase():
             print("Heard:", text)
 
             if any(phrase in text for phrase in WAKE_PHRASES):
+                
 
                 print("I.G.R.I.S. ACTIVATED!")
 

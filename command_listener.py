@@ -1,4 +1,5 @@
 import json
+import time
 from urllib.request import Request, urlopen
 from pathlib import Path
 CONVERSATION_EVENT_URL = "http://127.0.0.1:8765/event"
@@ -61,7 +62,7 @@ def listen_for_command() -> str | None:
     recognizer = sr.Recognizer()
 
     print("I.G.R.I.S. is listening...")
-
+    start_time = time.perf_counter()
     try:
         block_size = int(
             SAMPLE_RATE * BLOCK_SECONDS
@@ -204,7 +205,10 @@ def listen_for_command() -> str | None:
                     print(
                         "Speech finished."
                     )
-
+                    print(
+                        f"Recording time: "
+                        f"{time.perf_counter() - start_time:.2f}s"
+                    )
                     break
 
         if not speech_started:
@@ -244,11 +248,15 @@ def listen_for_command() -> str | None:
             audio = recognizer.record(
                 source
             )
-
+        recognition_start = time.perf_counter()
+       
         text = recognizer.recognize_google(
             audio
         ).lower().strip()
-
+        print(
+            f"Recognition time: "
+            f"{time.perf_counter() - recognition_start:.2f}s"
+        ) 
         print(
             "You said:",
             text
